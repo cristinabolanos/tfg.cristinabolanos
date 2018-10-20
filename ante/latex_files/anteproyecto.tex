@@ -1,0 +1,119 @@
+%
+%   File: tfg.tex
+%   Author(s): Cristina Bolaños Peño
+%   Copyright © 2018 Cristina Bolaños Peño
+%
+%   This program is free software; you can redistribute it and/or modify
+%   it under the terms of the GNU General Public License as published by
+%   the Free Software Foundation; either version 2 of the License, or
+%   (at your option) any later version.
+%
+%   This program is distributed in the hope that it will be useful,
+%   but WITHOUT ANY WARRANTY; without even the implied warranty of
+%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%   GNU General Public License for more details.
+%
+%   You should have received a copy of the GNU General Public License
+%   along with this program; if not, write to the Free Software
+%   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+%
+
+\documentclass[a4paper, 12pt, twoside, openright]{article}
+\title{Diseño de un sistema de control de riego automatizado}
+\author{Cristina Bolaños Peño}
+%\thanks{}
+\date{18 Octubre}
+
+\usepackage[spanish, english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\frenchspacing
+\usepackage[left=30mm, right=20mm, top=30mm, bottom=30mm]{geometry}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{ragged2e}
+\renewcommand{\familydefault}{\rmdefault}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+%   Page style
+\pagestyle{fancy}
+\newcommand{\chaptermark}[1]{\markright{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}{}}
+\setlength{\headheight}{30pt}
+\fancyhead[EL, OR]{
+    \includegraphics[height=0.8cm]{figures/logos/uclmRed.png}\hspace{0.2cm}\includegraphics[height=0.8cm]{figures/logos/esiWhite.png}}
+\fancyhead[ER, OL]{\chaptermark}
+\fancyfoot[EC, OC]{\thepage}
+
+%   Section Style
+\titleformat{\section}[block]
+    {\Large}{Capítulo \thesection}{1em}{}[]
+
+%   Title page style
+\makeatletter
+\newcommand{\printDoubleRuleUpDown}{
+    \par
+    \rule[0.5ex]{\linewidth}{2pt}\vspace{-\baselineskip}\vspace*{3.2pt}
+    \rule[0.5ex]{\linewidth}{1pt}\\[\baselineskip]
+    \par
+}
+\newcommand{\printDoubleRuleDownUp}{
+    \par
+    \rule[0.5ex]{\linewidth}{1pt}\vspace{-\baselineskip}\vspace*{3.2pt}
+    \rule[0.5ex]{\linewidth}{2pt}\\[\baselineskip]
+    \par\vspace{6.5mm}
+}
+\renewcommand{\maketitle}{
+    \begin{titlepage}
+    \centering
+    \printDoubleRuleUpDown
+    {\huge \@title} \par\vspace{4mm}
+    {\large\itshape Aplicado a la viticultura}
+    \printDoubleRuleDownUp
+    
+    {\large Por} \par\vspace{6.5mm}
+    {\large\scshape \@author} \par\vspace{11mm}
+    \includegraphics[scale=1]{figures/logos/departmentIcon.png} \par\vspace{6mm}
+    
+    {\large Departamento de Tecnologías y Sistemas de Información} \par\vspace{2mm}
+    {\large\scshape Escuela Superior de Informática \par
+        Universidad de Castilla-La Mancha} \par\vspace{6.5mm}
+    {\large Dirigido por: Jesús Félix Villanueva Molina} \par\vspace{11mm}
+    
+    \justifying{Estudio sobre los factores que afectan a un cultivo y que sean medibles, a efectos de poder automatizar el riego del terreno donde se halle dicho cultivo. Así, poder conseguir unas condiciones óptimas de evolución del fruto o vegetal y garantizar repetir estas condiciones por el medio del sistema.}
+    
+    \vspace{9mm}
+    \centering{\large\textsc{18 de Octubre del 2018}}
+    \vspace{12mm}
+    \end{titlepage}
+}
+\makeatother
+
+
+\begin{document}
+
+    \maketitle
+    
+    \tableofcontents
+    \newpage \listoffigures
+    \newpage \listoftables
+    
+    \newpage \section{Introducción}
+    
+    \newpage \section{Tecnología Específica}
+    
+    \newpage \section{Objetivos}
+    
+    \newpage \section{Métodos y Fases de Trabajo}
+    
+    \newpage \section{Medios}
+    \subsection{Medios Hardware}
+    \subsection{Medios Software}
+    
+    \newpage \section{Referencias}
+    
+    \newpage \section{Contrato de Propiedad Intelectual}
+    
+\end{document}
+
