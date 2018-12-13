@@ -1,5 +1,5 @@
 %
-%   File: tfg.tex
+%   File: anteproyecto.tex
 %   Author(s): Cristina Bolaños Peño
 %   Copyright © 2018 Cristina Bolaños Peño
 %
@@ -18,7 +18,7 @@
 %   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 %
 
-\documentclass[a4paper, 12pt, twoside, openright]{article}
+\documentclass[a4paper, 12pt, twoside]{article}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -27,7 +27,7 @@
 \usepackage{graphicx}
 \frenchspacing
 \usepackage[left=20mm, right=20mm, top=30mm, bottom=30mm, asymmetric]{geometry}
-\usepackage[colorlinks=true,linkcolor=black,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
 \usepackage{ragged2e}
 \renewcommand{\familydefault}{\rmdefault}
 \usepackage{fancyhdr}
@@ -44,10 +44,11 @@
 \renewcommand{\headrulewidth}{0pt}
 \pagestyle{fancy}
 \setlength{\headheight}{30pt}
-\fancyhead[EL, OR]{
-    \includegraphics[height=0.8cm]{figures/logos/uclmRed.png}\hspace{0.2cm}\includegraphics[height=0.8cm]{figures/logos/esiWhite.png}}
-\fancyhead[ER, OL]{}
+\fancyhead[EL, OL]{\includegraphics[height=0.8cm]{figures/logos/uclmRed.png}}
+\fancyhead[ER, OR]{\includegraphics[height=0.8cm]{figures/logos/esiWhite.png}}
 \fancyfoot[EC, OC]{\thepage}
+
+\newcommand{\miss}{{\bfseries\color{red}\large **}}
 
 %   Section Style
 \titleformat{\section}[block]
@@ -70,6 +71,7 @@
 \renewcommand{\maketitle}{
     \begin{titlepage}
     \centering
+    {\huge \MakeUppercase{Anteproyecto}}
     \printDoubleRuleUpDown
     {\huge \@title} \par\vspace{4mm}
     {\large\itshape Aplicado a la viticultura}
@@ -84,10 +86,12 @@
         Universidad de Castilla-La Mancha} \par\vspace{6.5mm}
     {\large Dirigido por: Jesús Félix Villanueva Molina} \par\vspace{11mm}
     
-    \justifying{Estudio sobre los factores que afectan a un cultivo y que sean medibles, a efectos de poder automatizar el riego del terreno donde se halle dicho cultivo. Así, poder conseguir unas condiciones óptimas de evolución del fruto o vegetal y garantizar repetir estas condiciones por el medio del sistema.}
+    \justifying{Estudio sobre los factores que afectan a un cultivo y que sean medibles, a efectos de poder automatizar el riego del terreno donde se halle dicho cultivo. Así, poder conseguir unas condiciones óptimas de evolución del fruto o vegetal y garantizar la repetición estas condiciones por el medio del sistema.}
     
     \vspace{9mm}
     \centering{\large\textsc{31 de Diciembre de 2018}}
+    \par\vspace{9mm}
+    \small{v.1.0}
     \vspace{12mm}
     \end{titlepage}
 }
@@ -96,6 +100,10 @@
 %   Bibliography Configuration
 \addbibresource{anteReferences.bib}
 
+%   Miscellanious Configuration
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\diamond$}
+
 \begin{document}
 
     \maketitle
@@ -103,12 +111,12 @@
     \renewcommand{\contentsname}{Contenido}
     \tableofcontents
     \addtocontents{toc}{\vspace{4mm} {\large Capítulo} ~\hfill\textbf{Página}\par}
-    \renewcommand{\listfigurename}{Lista de Ilustraciones}
-    \newpage \listoffigures
-    \addtocontents{lof}{\vspace{4mm} {\large Ilustración} ~\hfill\textbf{Página}\par}
-    \renewcommand{\listtablename}{Lista de Tablas}
-    \newpage \listoftables
-    \addtocontents{lot}{\vspace{4mm} {\large Tabla} ~\hfill\textbf{Página}\par}
+%    \renewcommand{\listfigurename}{Lista de Ilustraciones}
+%    \newpage \listoffigures
+%    \addtocontents{lof}{\vspace{4mm} {\large Ilustración} ~\hfill\textbf{Página}\par\vspace{2mm}}
+%    \renewcommand{\listtablename}{Lista de Tablas}
+%    \newpage \listoftables
+%    \addtocontents{lot}{\vspace{4mm} {\large Tabla} ~\hfill\textbf{Página}\par\vspace{2mm}}
     
     \input{content/ante/introduction.tex}
     
@@ -120,8 +128,7 @@
     
     \input{content/ante/means.tex}
     
-    \input{content/ante/intellectualprop.tex}
-    
+%    \input{content/ante/intellectualprop.tex}
     \newpage \section{Referencias}
     \begingroup
         \renewcommand{\section}[2]{}
