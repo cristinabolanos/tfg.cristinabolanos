@@ -1,0 +1,1 @@
+$ENV{'TEXINPUTS'}='./pre-tfg//:' . $ENV{'TEXINPUTS'}; 

@@ -1,0 +1,54 @@
+\documentclass{pre-tfg}
+%\showhelp  % comenta o borra para eliminar ayudas
+
+\usepackage[backend=biber, style=apa, citestyle=apa]{biblatex}
+\DeclareLanguageMapping{spanish}{spanish-apa}
+
+\title{Diseño de un sistema de control de riego automatizado aplicado a la viticultura}
+\author{Cristina Bolaños Peño}
+\advisorFirst{Félix Jesús Villanueva Molina}
+\advisorDepartment{Departamento de Tecnologías y Sistemas de la Información}
+\advisorSecond{}
+\intensification{Ingienería de Computadores}
+\docdate{2018}{Diciembre}
+
+
+%   Bibliography Configuration
+\addbibresource{anteReferences.bib}
+
+%   Miscellanious Configuration
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\diamond$}
+
+\begin{document}
+
+\maketitle
+
+    \tableofcontents
+    
+    \input{content/ante/introduction.tex}
+    
+    \input{content/ante/technology.tex}
+    
+    \input{content/ante/target.tex}
+    
+    \input{content/ante/methods.tex}
+    
+    \input{content/ante/means.tex}
+    
+%    \input{content/ante/intellectualprop.tex}
+    \newpage \section{Referencias}
+    \begingroup
+        \renewcommand{\section}[2]{}
+        \printbibliography
+    \endgroup
+
+\end{document}
+
+
+% Local Variables:
+% coding: utf-8
+% mode: flyspell
+% ispell-local-dictionary: "castellano8"
+% mode: latex
+% End:

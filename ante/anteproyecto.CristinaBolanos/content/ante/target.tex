@@ -11,7 +11,7 @@ El proyecto toma base en la siguiente arquitectura:
 %   Descripción de la figura
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.5]{figures/diagrams/architecture.png}
+    \includegraphics[width=\textwidth]{figures/diagrams/architecture2.png}
     \caption{Arquitectura del sistema.}
     \label{fig:architecture}
 \end{figure}
@@ -21,7 +21,7 @@ En la figura \ref{fig:architecture} podemos ver cómo, el usuario, desde cualqui
 \begin{description}
     \item [\textbf{SubLC}] Éste es el núcleo del proyecto. Se compone de 3 elementos fundamentales:
     \begin{itemize}
-        \item Nodo recolector: Controlador con acceso a datos del entorno proporcionados por sensores.
+        \item Nodo recolector: Controlador con acceso a datos del entorno proporcionados por sensores. Para que el sistema funcione correctamente debe de haber varios de estos dispositivos repartidos por el terreno.
         \item Válvula: Sistema de control del caudal de agua de una específica sección del terreno. Debe ser eléctricamente manejable para poder ajustar su medida (electroválvula).
         \item Pasarela: Controlador que, como su propio nombre indica, actúa de pasarela entre los nodos recolectores y el subsistema SubI.
     \end{itemize}
