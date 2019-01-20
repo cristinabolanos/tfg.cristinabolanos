@@ -1,29 +1,18 @@
-# README #
+# SISTEMA DE CONTROL DE RIEGO AUTOMATIZADO UTILIZANDO [OPEN GARDEN OUTDOOR KIT](https://www.cooking-hacks.com/open-garden-outdoor-1node-1gw) #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Trabajo de Fin de Grado para la Escuela Superior de Informática (Ciudad Real), Universidad de Castilla-La Mancha.
 
-### What is this repository for? ###
+***
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+### Cómo comenzar ###
 
-### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+***
 
-### Contribution guidelines ###
+### Novedades ###
 
-* Writing tests
-* Code review
-* Other guidelines
 
-### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+***
+
+Autor/a: Cristina Bolaños Peño.
