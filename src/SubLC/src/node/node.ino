@@ -19,12 +19,12 @@
     - 
   *
   *
+  */
 
 #include <DHT22.h>
 #include <OpenGardenNode.h>
 #include <Ports.h>
 #include <RF12.h>
-  */
 
 Payload nodePacket;
  
