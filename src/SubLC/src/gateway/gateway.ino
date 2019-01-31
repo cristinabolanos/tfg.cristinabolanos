@@ -15,40 +15,95 @@
 #include <RemoteSwitch.h>
 #include <RF12.h>
 #include <RTClib.h>
+#include <LowPower.h>
 
 DateTime now;
+unsigned long start, current;
+long interval = 5000000; //milliseconds
+String commands = "";
+bool newCommand = false;
+int RESET = 12;
+
+void convertTime(uint8_t value){
+  if(value<10){
+    switch (value){
+    case 0:Serial.print("00");break;
+    case 1:Serial.print("01");break;
+    case 2:Serial.print("02");break;
+    case 3:Serial.print("03");break;
+    case 4:Serial.print("04");break;
+    case 5:Serial.print("05");break;
+    case 6:Serial.print("06");break;
+    case 7:Serial.print("07");break;
+    case 8:Serial.print("08");break;
+    case 9:Serial.print("09");break;
+    }
+  }
+  else
+    Serial.print(value, DEC);
+}
+
+void printData () {
+  now = OpenGarden.getTime();
+  OpenGarden.printTime(now);
+  Serial.println();
+  // Print day info
+  Serial.print(now.day(), DEC);
+  Serial.print("/");
+  Serial.print(now.month(), DEC);
+  Serial.print("/");
+  Serial.print(now.year(), DEC);
+
+  Serial.print(",");
+  // Print hour info
+  convertTime(now.hour());
+  Serial.print(":");
+  convertTime(now.minute());
+  Serial.print(":");
+  convertTime(now.second());
+  
+  Serial.print(",");
+  // Print luminosity (%)
+  Serial.print(OpenGarden.readLuminosity());
+  
+  Serial.print(',');
+  // Print temperature (ºC)
+  Serial.print(OpenGarden.readAirTemperature());
+  
+  Serial.print(',');
+  // Print humidity (%RH)
+  Serial.print(OpenGarden.readAirHumidity());
+  
+  Serial.print(',');
+  // Print soil moisture (?)
+  Serial.println(OpenGarden.readSoilMoisture());
+}
 
 void setup() {
     Serial.begin(9600);
     OpenGarden.initSensors();
     OpenGarden.initRTC();
     OpenGarden.setTime();
+    start = millis();
 }
 
 
 void loop() {
-    OpenGarden.sensorPowerON();
-    delay(500);
+  current = millis();
+  
+  OpenGarden.sensorPowerON();
+  delay(500);
+  printData();
+  OpenGarden.sensorPowerOFF();
 
-    // Get time and print time of the day
-    now = OpenGarden.getTime();
-    Serial.print(now.hour(), DEC);
-    Serial.print(':');
-    Serial.print(now.minute(), DEC);
-    Serial.print(':');
-    Serial.print(now.second(), DEC);
-    Serial.print(',');
+  while (!newCommand && (current - start > interval))
+  if (newCommand){
     
-    // Read and print results as < luminosity(%),humidity(%RH),temperature(ºC),soilmoisture(values with out calibration) >
-    Serial.print(OpenGarden.readLuminosity());
-    Serial.print(',');
-    Serial.print(OpenGarden.readAirTemperature());
-    Serial.print(',');
-    Serial.print(OpenGarden.readAirHumidity());
-    Serial.print(',');
-    Serial.println(OpenGarden.readSoilMoisture());
-    
-    OpenGarden.sensorPowerOFF();  //Turns off the sensor power supply
-    delay(2000);   //Wait 2 seconds
-    //delay(600000);   //Wait 10 minutes
+  }
 }
+
+void serialEvent(){
+    
+}
+
+void(* resetFunc)(void) = 0;
