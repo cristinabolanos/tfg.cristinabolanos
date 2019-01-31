@@ -6,7 +6,11 @@ IDE: [Arduino 1.8.8](https://www.arduino.cc/en/Main/Software)
 
 ATTiny Core: [ATtinyCore 1.2.2](https://github.com/SpenceKonde/ATTinyCore)
 
-# NOVEDADES EN EL DESARROLLO #
+# NOVEDADES EN EL DESARROLLO # 
+
+###### 29/01/2019 :: SUBLC ######
+
+1. Se ha diseñado un programa para recolectar los datos que el Arduino envía por el puerto Serie. Se almacena en el propio dispositivo de forma provisional ya que al querer almacenarlo en un USB seguía dando problemas de formato. Se prevee dejar el sistema recogiendo datos de una planta desde hoy a las 17:00 hasta al día siguiente esperando que no haya problemas.
 
 ###### 25/01/2019 :: SUBLC ######
 
