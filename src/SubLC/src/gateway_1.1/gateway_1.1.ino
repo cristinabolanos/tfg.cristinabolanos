@@ -1,8 +1,6 @@
 /*
  * Author: Cristina Bolaños Peño
- * SubLC_Gateway v1.0
- * 
- * Hora aprox de inicio: 9:40
+ * SubLC_Gateway v1.0.0
  * 
  * Visit https://bitbucket.org/cristibp11/tfg.cristinabolanos/src/default/
  */
@@ -17,8 +15,14 @@
 #include <RemoteSwitch.h>
 #include <RF12.h>
 #include <RTClib.h>
+#include <LowPower.h>
 
 DateTime now;
+unsigned long start, current;
+long interval = 5000000; //milliseconds
+String commands = "";
+bool newCommand = false;
+int RESET = 12;
 
 void convertTime(uint8_t value){
   if(value<10){
@@ -41,6 +45,7 @@ void convertTime(uint8_t value){
 
 void printData () {
   now = OpenGarden.getTime();
+  OpenGarden.printTime(now);
   Serial.println();
   // Print day info
   Serial.print(now.day(), DEC);
@@ -79,15 +84,26 @@ void setup() {
     OpenGarden.initSensors();
     OpenGarden.initRTC();
     OpenGarden.setTime();
+    start = millis();
 }
 
 
-void loop() {  
+void loop() {
+  current = millis();
+  
   OpenGarden.sensorPowerON();
   delay(500);
-  
   printData();
-  
   OpenGarden.sensorPowerOFF();
-  delay(10000);
+
+  while (!newCommand && (current - start > interval))
+  if (newCommand){
+    
+  }
 }
+
+void serialEvent(){
+    
+}
+
+void(* resetFunc)(void) = 0;
