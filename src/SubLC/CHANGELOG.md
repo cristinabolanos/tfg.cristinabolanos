@@ -4,6 +4,14 @@ Todos los cambios notables de este subproyecto serán documentados en este fiche
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), y a su vez se adhiere al [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### 25/02/2019
+1. El ATtiny84 se ha podido programar con una versión inicial del programa nodo satisfactoriamente gracias a los siguientes cambios:
+	* Modificación del archivo $HOME/.arduino15/packages/ATtinyCore/hardware/avr/1.2.3/programers.txt en lo que corresponde a la sección del programador Arduino as ISP cambiando *arduino* por *stk500v1* en:
+	```c
+	arduinoasisp.protocol=stk500v1
+	arduinoasisp.program.protocol=stk500v1
+	```
+
 ### 29/01/2019
 
 1. Se ha diseñado un programa para recolectar los datos que el Arduino envía por el puerto Serie. Se almacena en el propio dispositivo de forma provisional ya que al querer almacenarlo en un USB seguía dando problemas de formato. Se prevee dejar el sistema recogiendo datos de una planta desde hoy a las 17:00 hasta al día siguiente esperando que no haya problemas.
