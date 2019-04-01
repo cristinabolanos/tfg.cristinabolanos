@@ -1,13 +1,27 @@
 
-.default-env:
+PASSWORD := secret
 
-%-lastest: %-1.0.0
+.check-dependencies:
+	$(foreach depen,$(DEPENDENCIES),\
+		$(if $(shell which $(depen)),,$(error "Programa $(depen) no instalado.")))
+
+%-lastest: %-0.0.0
 	@echo ""
 
-%-1.0.0: MONITOR = grafana
-%-1.0.0: VERSION = 1.0.0
-%-1.0.0: .%
-	@echo "Software version: 1.0.0"
+%-0.0.0: MONITOR = grafana
+%-0.0.0: VERSION = 0.0.0
+%-0.0.0: .check-dependencies .%
+	@echo "Software version: $(VERSION)"
 
 .build:
-	docker build -t=local/monitor/$(MONITOR):$(VERSION) .
+ifeq ($(REMOTE), no)
+	@docker build -t=local/monitor/$(MONITOR):$(VERSION) .
+else
+	@docker build -t=$(REPOSITORY)/monitor/$(MONITOR):$(VERSION) .
+	@docker push $(REPOSITORY)/monitor/$(MONITOR):$(VERSION)
+endif
+
+.run:
+ifeq ($(REMOTE), no)
+	@docker run -d -p 80:3000 --name=local_$(MONITOR) --network=SUBI -e "GF_SECURITY_ADMIN_PASSWORD=$(PASSWORD)" local/monitor/$(MONITOR):$(VERSION)
+endif
