@@ -1,0 +1,14 @@
+# pack-refs with: peeled fully-peeled 
+5d5f931d09f8843b8c415981ee0cf04a16b5bd8f refs/remotes/origin/RFxConsole-20150519
+cd21f9c0595ad43b3766acad32984df24405cda9 refs/remotes/origin/RFxConsole-RF95
+5877c64cef5261b0a4a7cc761750d1ac0c786419 refs/remotes/origin/RFxConsole-RSSI
+88797ccc28257f6016c464bf1a8d55460a29f684 refs/remotes/origin/RFxConsole-Testing
+c1f4f58e1fea8bdfc4b6eede2f4ba8bd4873912a refs/remotes/origin/RFxPinChange
+535065627461ddd95e46b1264283adf78c509cde refs/remotes/origin/RoomNode-tweak
+026bb6ea843abafff1619ae272a4ea754e0b016e refs/remotes/origin/master
+0990651f18a728770e6d87c2f94bca6f06e5b1a1 refs/remotes/origin/rf12mods
+ec75fd58a16d719a373a84c7c82b68c3b6288c55 refs/tags/v10
+^8b42773a98115376b14fac7ba8a6f2f54775578d
+0e41768eefc1a276f83550f62804fc06ee62c9d6 refs/tags/v11
+^67f63cc4b8cbb80ddc43e7e71cf5abc17e9af673
+026bb6ea843abafff1619ae272a4ea754e0b016e refs/tags/v12.0

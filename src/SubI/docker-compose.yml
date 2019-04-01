@@ -1,0 +1,23 @@
+version: "3"
+services:
+  monitor:
+#    image: grafana/grafana:5.4.3
+    image: local/monitor/grafana:0.0.0
+    deploy:
+      replicas: 1
+    ports:
+      - "80:3000"
+    networks:
+      - roles
+
+  storage:
+#    image: mysql/mysql-server:8.0
+    image: local/storage/mysql:0.0.0
+    deploy:
+      replicas: 1
+    networks:
+      - roles
+
+networks:
+  roles:
+    driver: overlay
