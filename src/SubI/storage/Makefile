@@ -23,11 +23,12 @@ endif
 
 .run:
 ifeq ($(REMOTE), no)
-	@docker run -d -p 5510:3306 --name=local_$(STORAGE) --network=SUBI -e "MYSQL_ROOT_PASSWORD=$(PASSWORD)" local/storage/$(STORAGE):$(VERSION)
+	@docker run -d --name=local_$(STORAGE) --network=SUBI -e "MYSQL_ROOT_PASSWORD=$(PASSWORD)" local/storage/$(STORAGE):$(VERSION)
 endif
 
 .create:
 ifeq ($(REMOTE), no)
+	@cat ./users.sql | docker exec -i local_mysql mysql -uroot -p$(PASSWORD)
 	@cat ./restore.sql | docker exec -i local_mysql mysql -uroot -p$(PASSWORD) -Dexample
 endif
 
