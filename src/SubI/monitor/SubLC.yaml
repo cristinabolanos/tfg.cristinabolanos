@@ -1,0 +1,24 @@
+# # config file version
+apiVersion: 1
+
+# # list of datasources that should be deleted from the database
+deleteDatasources:
+   - name: SubLC
+     orgId: 1
+
+# # list of datasources to insert/update depending
+# # on what's available in the datbase
+#datasources:
+datasources:
+  - name: SubLC
+    type: mysql
+    url: local_mysql:3306
+    database: example
+    user: grafana
+    password: secret
+#    jsonData:
+#      maxOpenConns: 0         # Grafana v5.4+
+#      maxIdleConns: 2         # Grafana v5.4+
+#      connMaxLifetime: 14400  # Grafana v5.4+
+
+
