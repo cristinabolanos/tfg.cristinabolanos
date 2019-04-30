@@ -7,79 +7,57 @@ from network import LoRa
 
 lora = LoRa(mode=LoRa.LORA, tx_iq=True, region=LoRa.EU868)
 
-FIND_GATEWAY_FORMAT = '!6B' + 'B'
-FIND_GATEWAY_ACK_FORMAT = '!6B' + '6B' + 'B'
-PUSH_FORMAT = '!6B' + 'B'
-PUSH_ACK_FORMAT = '!6B' + 'B'
+DATA_FORMAT = '!2B' + 'B' + 'BBB'   # Dest | Src | Seq | Tmp | Hum | Soil
+DATA_ACK_FORMAT = '!B' + 'B' + ''   # Dest | Seq
+SETUP_FORMAT = '!2B' + 'B' + ''     # Dest | Src | Src
+SETUP_ACK_FORMAT = '!2B' + 'B' + '' # Dest | Src | Src
 
-MAC = ubinascii.hexlify(unique_id())
-MAC_TUPLE = struct.unpack('!6B', MAC)
-GATEWAY_MAC_TUPLE = ()
+BROADCAST = 255
+GATEWAY = -1
+ID = 1
 
-SEQ_FIND = 0
-
-pkg_seq = 0
-
-def setup():
-    print('Setting up...')
+def getGateway(seq=0):
     sock = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
     sock.setblocking(False)
-    sock.send(struct.pack(FIND_GATEWAY_FORMAT,
-              MAC_TUPLE[0], MAC_TUPLE[1],
-              MAC_TUPLE[2], MAC_TUPLE[3],
-              MAC_TUPLE[4], MAC_TUPLE[5],
-              SEQ_FIND)
+    sock.send(struct.pack(SETUP_FORMAT,
+                          BROADCAST, ID,
+                          seq)
               )
     wait_for_ack = True
     while(wait_for_ack):
-      ack = sock.recv(6 + 6 + 1)
-      if len(ack):
-          ack_pkg = struct.unpack(FIND_GATEWAY_ACK_FORMAT, ack)
-          ack_mac = ack_pkg[0], ack_pkg[1], ack_pkg[2], ack_pkg[3], ack_pkg[4], ack_pkg[5]
-          gateway_mac = ack_pkg[6], ack_pkg[7], ack_pkg[8], ack_pkg[9], ack_pkg[10], ack_pkg[11]
-          ack_seq = ack_pkg[12]
-          if ack_mac == MAC_TUPLE:
-              if ack_seq == pkg_seq:
-                  wait_for_ack = False
-                  ++pkg_seq
-                  GATEWAY_MAC_TUPLE = gateway_mac
-                  print('Gateway found on {0}'.format(gateway_mac))
+        ack = sock.recv(struct.calcsize(SETUP_ACK_FORMAT))
+        if len(ack):
+            id, gateway, ack_seq = struct.unpack(SETUP_ACK_FORMAT, ack)
+            if id == ID and ack_seq == seq:
+                wait_for_ack = False
     sock.close()
-    time.sleep(5)
-    print('Now ready to sending data!')
+    return gateway
 
-def get_data():
+def readSensors():
     pass
 
-def send_data(temp=None, hum=None,
-              soil=None):
+def sendData(seq):
     sock = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
     sock.setblocking(False)
-    sock.send(struct.pack(PUSH_FORMAT,
-                          MAC_TUPLE[0], MAC_TUPLE[1],
-                          MAC_TUPLE[2], MAC_TUPLE[3],
-                          MAC_TUPLE[4], MAC_TUPLE[5],
-                          pkg_seq))
+    sock.send(struct.pack(DATA_FORMAT,
+                          BROADCAST, ID,
+                          seq, 0, 0, 0)
+              )
     wait_for_ack = True
     while(wait_for_ack):
-        ack = sock.recv(6 + 1)
+        ack = sock.recv(struct.calcsize(DATA_ACK_FORMAT))
         if len(ack):
-            ack_pkg = struct.unpack(PUSH_ACK_FORMAT, ack)
-            ack_mac = ack_pkg[0], ack_pkg[1], ack_pkg[2], ack_pkg[3], ack_pkg[4], ack_pkg[5]
-            ack_seq = ack_pkg[6]
-            if ack_mac == MAC_TUPLE:
-                if ack_seq == 1:
-                    wait_for_ack = False
-                    ++pkg_seq
-                    print('Message sended correctly.')
-                else:
-                    wait_for_ack = False
-                    print('Error on message. Try again.')
+            id, ack_seq = struct.unpack(DATA_ACK_FORMAT, ack)
+            if id == ID and ack_seq == seq:
+                wait_for_ack = False
+                print('Message sended successfully')
     sock.close()
-    time.sleep(5)
 
 if __name__ == '__main__':
-    setup()
+    seq = 0
+    GATEWAY = getGateway(seq)
+    print('My gateway is {0}'.format(GATEWAY))
     while(True):
-        get_data()
-        send_data()
+        time.sleep(1)
+        readSensors()
+        sendData(++seq)

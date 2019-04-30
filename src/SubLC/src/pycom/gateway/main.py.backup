@@ -1,40 +1,71 @@
-import pycom
-import time
-
-from network import LoRa
 import socket
-import ubinascii
 import struct
+import ubinascii
+from machine import unique_id
+from network import LoRa
+
+lora = LoRa(mode=LoRa.LORA, rx_iq=True, region=LoRa.EU868)
+sock = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
+sock.setblocking(False)
+
+FIND_FORMAT = '!12B' + '12B' + 'B'
+FIND_ACK_FORMAT = '!12B' + '12B' + 'B'
+PULL_FORMAT = '!12B' + '12B' + 'B' + 'BBB'
+PULL_ACK_FORMAT = '!12B' + 'B'
+
+BROADCAST_MAC_TUPLE = (255, 255, 255, 255, 255, 255,
+                 255, 255, 255, 255, 255, 255)
+MY_MAC_TUPLE = struct.unpack('!12B', ubinascii.hexlify(unique_id()))
+
+def process_data(temp, hum,
+                 soil):
+    pass
 
 
-# Initialise LoRa in LORAWAN mode.
-# Please pick the region that matches where you are using the device:
-# Asia = LoRa.AS923
-# Australia = LoRa.AU915
-# Europe = LoRa.EU868
-# United States = LoRa.US915
-lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.EU868)
-
-# create an ABP authentication params
-dev_addr = struct.unpack(">l", ubinascii.unhexlify('00000005'))[0]
-nwk_swkey = ubinascii.unhexlify('2B7E151628AED2A6ABF7158809CF4F3C')
-app_swkey = ubinascii.unhexlify('2B7E151628AED2A6ABF7158809CF4F3C')
-
-# join a network using ABP (Activation By Personalisation)
-lora.join(activation=LoRa.ABP, auth=(dev_addr, nwk_swkey, app_swkey))
-
-# create a LoRa socket
-s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
-
-# set the LoRaWAN data rate
-s.setsockopt(socket.SOL_LORA, socket.SO_DR, 5)
-
-# make the socket non-blocking
-s.setblocking(False)
-
-# send some data
-s.send(bytes([0x01, 0x02, 0x03]))
-
-# get any data received...
-data = s.recv(64)
-print(data)
+print('Ready to recieve data from sensors...')
+while(True):
+    req = sock.recv(struct.calcsize(PULL_FORMAT))
+    if len(req):
+        req_pkg = struct.unpack(FIND_FORMAT, req)
+        print(req_pkg)
+        req_mac = (req_pkg[0], req_pkg[1], req_pkg[2],
+                   req_pkg[3], req_pkg[4], req_pkg[5],
+                   req_pkg[6], req_pkg[7], req_pkg[8],
+                   req_pkg[9], req_pkg[10], req_pkg[11])
+        gateway_mac = (req_pkg[12], req_pkg[13], req_pkg[14],
+                       req_pkg[15], req_pkg[16], req_pkg[17],
+                       req_pkg[18], req_pkg[19], req_pkg[20],
+                       req_pkg[21], req_pkg[22], req_pkg[23])
+        if gateway_mac == BROADCAST_MAC_TUPLE:
+            req_seq = req_pkg[24]
+            sock.send(struct.pack(FIND_ACK_FORMAT,
+                      req_mac[0], req_mac[1],
+                      req_mac[2], req_mac[3],
+                      req_mac[4], req_mac[5],
+                      req_mac[6], req_mac[7],
+                      req_mac[8], req_mac[9],
+                      req_mac[10], req_mac[11],
+                      MY_MAC_TUPLE[0], MY_MAC_TUPLE[1],
+                      MY_MAC_TUPLE[2], MY_MAC_TUPLE[3],
+                      MY_MAC_TUPLE[4], MY_MAC_TUPLE[5],
+                      MY_MAC_TUPLE[6], MY_MAC_TUPLE[7],
+                      MY_MAC_TUPLE[8], MY_MAC_TUPLE[9],
+                      MY_MAC_TUPLE[10], MY_MAC_TUPLE[11],
+                      req_seq)
+                      )
+        elif gateway_mac == MY_MAC_TUPLE:
+            req_seq = req_pkg[27]
+            process_data(temp=req_pkg[24],
+                         hum=req_pkg[25],
+                         soil=req_pkg[26]
+                         )
+            sock.send(struct.pack(PULL_ACK_FORMAT,
+                      req_mac[0], req_mac[1],
+                      req_mac[2], req_mac[3],
+                      req_mac[4], req_mac[5],
+                      req_mac[6], req_mac[7],
+                      req_mac[8], req_mac[9],
+                      req_mac[10], req_mac[11],
+                      req_seq)
+                      )
+        print('Request fulfilled for {0}'.format(req_mac))
