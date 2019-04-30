@@ -1,0 +1,125 @@
+import socket
+import struct
+import time
+import ubinascii
+from machine import unique_id
+from network import LoRa
+
+lora = LoRa(mode=LoRa.LORA, tx_iq=True, region=LoRa.EU868)
+
+FIND_FORMAT = '!12B' + '12B' + 'B'
+FIND_ACK_FORMAT = '!12B' + '12B' + 'B'
+PUSH_FORMAT = '!12B' + '12B' + 'B' + 'BBB'
+PUSH_ACK_FORMAT = '!12B' + 'B'
+
+BROADCAST_MAC_TUPLE = (255, 255, 255, 255, 255, 255,
+                 255, 255, 255, 255, 255, 255)
+MY_MAC_TUPLE = struct.unpack('!12B', ubinascii.hexlify(unique_id()))
+GATEWAY_MAC_TUPLE = ()
+
+def setup(pkg_seq=0):
+    print('Setting up...')
+    sock = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
+    sock.setblocking(False)
+    sock.send(struct.pack(FIND_FORMAT,
+              MY_MAC_TUPLE[0], MY_MAC_TUPLE[1],
+              MY_MAC_TUPLE[2], MY_MAC_TUPLE[3],
+              MY_MAC_TUPLE[4], MY_MAC_TUPLE[5],
+              MY_MAC_TUPLE[6], MY_MAC_TUPLE[7],
+              MY_MAC_TUPLE[8], MY_MAC_TUPLE[9],
+              MY_MAC_TUPLE[10], MY_MAC_TUPLE[11],
+              BROADCAST_MAC_TUPLE[0], BROADCAST_MAC_TUPLE[1],
+              BROADCAST_MAC_TUPLE[2], BROADCAST_MAC_TUPLE[3],
+              BROADCAST_MAC_TUPLE[4], BROADCAST_MAC_TUPLE[5],
+              BROADCAST_MAC_TUPLE[6], BROADCAST_MAC_TUPLE[7],
+              BROADCAST_MAC_TUPLE[8], BROADCAST_MAC_TUPLE[9],
+              BROADCAST_MAC_TUPLE[10], BROADCAST_MAC_TUPLE[11],
+              0, 0, 0, 0)
+              )
+    wait_for_ack = True
+    while(wait_for_ack):
+      ack = sock.recv(struct.calcsize(FIND_ACK_FORMAT))
+      if len(ack):
+          ack_pkg = struct.unpack(FIND_ACK_FORMAT, ack)
+          ack_mac = (ack_pkg[0], ack_pkg[1], ack_pkg[2],
+                     ack_pkg[3], ack_pkg[4], ack_pkg[5],
+                     ack_pkg[6], ack_pkg[7], ack_pkg[8],
+                     ack_pkg[9], ack_pkg[10], ack_pkg[11])
+          gateway_mac = (ack_pkg[12], ack_pkg[13], ack_pkg[14],
+                         ack_pkg[15], ack_pkg[16], ack_pkg[17],
+                         ack_pkg[18], ack_pkg[19], ack_pkg[20],
+                         ack_pkg[21], ack_pkg[22], ack_pkg[23])
+          ack_seq = ack_pkg[24]
+          if ack_mac == MY_MAC_TUPLE and ack_seq == pkg_seq:
+                  wait_for_ack = False
+                  ++pkg_seq
+    sock.close()
+    time.sleep(5)
+    print('Now ready to send data!')
+    return gateway_mac
+
+def get_data():
+    time.sleep(1)
+
+def send_data(pkg_seq,
+              temp=0, hum=0,
+              soil=0):
+    sock = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
+    sock.setblocking(False)
+    sock.send(struct.pack(PUSH_FORMAT,
+              MY_MAC_TUPLE[0], MY_MAC_TUPLE[1],
+              MY_MAC_TUPLE[2], MY_MAC_TUPLE[3],
+              MY_MAC_TUPLE[4], MY_MAC_TUPLE[5],
+              MY_MAC_TUPLE[6], MY_MAC_TUPLE[7],
+              MY_MAC_TUPLE[8], MY_MAC_TUPLE[9],
+              MY_MAC_TUPLE[10], MY_MAC_TUPLE[11],
+              GATEWAY_MAC_TUPLE[0], GATEWAY_MAC_TUPLE[1],
+              GATEWAY_MAC_TUPLE[2], GATEWAY_MAC_TUPLE[3],
+              GATEWAY_MAC_TUPLE[4], GATEWAY_MAC_TUPLE[5],
+              GATEWAY_MAC_TUPLE[6], GATEWAY_MAC_TUPLE[7],
+              GATEWAY_MAC_TUPLE[8], GATEWAY_MAC_TUPLE[9],
+              GATEWAY_MAC_TUPLE[10], GATEWAY_MAC_TUPLE[11],
+              temp, hum, soil, pkg_seq)
+              )
+    wait_for_ack = True
+    while(wait_for_ack):
+        ack = sock.recv(struct.calcsize(PUSH_ACK_FORMAT))
+        if len(ack):
+            ack_pkg = struct.unpack(PUSH_ACK_FORMAT, ack)
+            ack_mac = (ack_pkg[0], ack_pkg[1], ack_pkg[2],
+                       ack_pkg[3], ack_pkg[4], ack_pkg[5],
+                       ack_pkg[6], ack_pkg[7], ack_pkg[8],
+                       ack_pkg[9], ack_pkg[10], ack_pkg[11])
+            ack_seq = ack_pkg[12]
+            if ack_mac == MY_MAC_TUPLE:
+                if ack_seq == pkg_seq:
+                    wait_for_ack = False
+                    print('Message sended correctly.')
+                else:
+                    sock.send(struct.pack(PUSH_FORMAT,
+                              MY_MAC_TUPLE[0], MY_MAC_TUPLE[1],
+                              MY_MAC_TUPLE[2], MY_MAC_TUPLE[3],
+                              MY_MAC_TUPLE[4], MY_MAC_TUPLE[5],
+                              MY_MAC_TUPLE[6], MY_MAC_TUPLE[7],
+                              MY_MAC_TUPLE[8], MY_MAC_TUPLE[9],
+                              MY_MAC_TUPLE[10], MY_MAC_TUPLE[11],
+                              GATEWAY_MAC_TUPLE[0], GATEWAY_MAC_TUPLE[1],
+                              GATEWAY_MAC_TUPLE[2], GATEWAY_MAC_TUPLE[3],
+                              GATEWAY_MAC_TUPLE[4], GATEWAY_MAC_TUPLE[5],
+                              GATEWAY_MAC_TUPLE[6], GATEWAY_MAC_TUPLE[7],
+                              GATEWAY_MAC_TUPLE[8], GATEWAY_MAC_TUPLE[9],
+                              GATEWAY_MAC_TUPLE[10], GATEWAY_MAC_TUPLE[11],
+                              pkg_seq, temp, hum, soil)
+                              )
+                    print('Trying again.')
+    sock.close()
+    time.sleep(5)
+    return ++pkg_seq
+
+if __name__ == '__main__':
+    GATEWAY_MAC_TUPLE = setup()
+    print('My gateway is {0}'.format(GATEWAY_MAC_TUPLE))
+    pkq_seq = 1
+    while(True):
+        get_data()
+        pkg_seq = send_data(pkq_seq)
