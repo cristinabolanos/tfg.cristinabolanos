@@ -3,9 +3,10 @@ import struct
 import time
 import ubinascii
 from machine import unique_id
-from network import LoRa
+from network import LoRa, WLAN
 
 lora = LoRa(mode=LoRa.LORA, rx_iq=True, region=LoRa.EU868)
+wlan = WLAN(mode=WLAN.STA)
 
 DATA_FORMAT = '!2B' + 'B' + 'BBB'    # Dest | Src | Seq | Tmp | Hum | Soil
 DATA_ACK_FORMAT = '!B' + 'B' + ''    # Dest | Seq
@@ -17,6 +18,14 @@ ID = 10
 
 RECIEVING_WAIT_TIME = 15
 
+
+def wlan_setup(ssid='LoPyAP',
+               auth=(WLAN.WPA2, 'contrasenuev1')
+               ):
+    wlan.connect(ssid=ssid, auth=auth)
+    while not wlan.isconnected():
+        time.sleep_ms(50)
+    print(wlan.ifconfig())
 
 def processData(temp, hum, soil):
     print('Recieved {0} {1} {2}'.format(temp, hum, soil))
@@ -53,6 +62,7 @@ def sendData():
 
 
 if __name__ == '__main__':
+    wlan_setup()
     while True:
         recieveData()
         sendData()
