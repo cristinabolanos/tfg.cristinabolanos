@@ -1,0 +1,153 @@
+\chapter{Metodología de trabajo}
+\label{cap:Metodologia}
+
+En este capítulo se detalla la metodología de trabajo empleada para lograr los objetivos marcados en el Capítulo \ref{cap:Objetivo}, así como en el desarrollo del proyecto  y las herramientas, tanto software como hardware, utilizadas en el mismo.
+
+\section{Elección y breve descripción}
+\label{sec:Elección}
+
+Para la elaboración de este TFG se ha empleado el Proceso Unificado de Desarrollo, de ahora en adelante referido como PUD, como metodología de trabajo. Tal y como se define en \cite{PUD2017}:
+
+\begin{quote}
+    El PUD es un marco genérico que puede especializarse para una gran variedad de sistemas de software, para diferentes áreas de aplicación, diferentes tipos de organizaciones, diferentes niveles de aptitud y diferentes tamaños de proyectos.
+\end{quote}
+
+Se ha optado por dicha alternativa por su relativa sencillez, generalidad, y la amplitud de control de software que ofrece.
+
+Para diseñar y realizar los modelos de cualquier sistema, PUD hace uso del Lenguaje Unificado de Modelado, en adelante referido como UML, el cual se ha utilizado en este proyecto en sus diferentes etapas. Cabe mencionar que el PUD se caracteriza por:
+\begin{compactitem}
+    \item Ser iterativo e incremental.
+    \item Estar basado en la arquitectura.
+    \item Estar dirigido por casos de uso.
+\end{compactitem}
+
+\section{Gestión del proyecto}
+\label{sec:Gestion}
+
+\subsection{Fases}
+\label{subsec:Fases}
+
+Siguiendo la estructura del ciclo de vida de un producto software definido por PUD, se han establecido las siguientes pautas o fases generales a seguir:
+
+\begin{enumerate}
+    \item \textbf{Inicio}: Se llevará a cabo una descripción del producto final que se desea conseguir, estudiando el alcance del proyecto, su viabilidad, y la planificación del desarrollo del proyecto. Se obtienen:
+    \begin{enumerate}
+        \item Modelo de casos de uso, el cual describe las funcionalidades del sistema.
+    \end{enumerate}
+    \item \textbf{Elaboración}: Se desarrollará y trabajará en el modelo obtenido en la fase anterior profundizando así en la arquitectura del sistema, consiguiendo la línea base de ésta. Se obtienen:
+    \begin{enumerate}
+        \item Modelo de análisis, con el que desarrollamos las funcionalidades en procesos, interfaces o bancos de datos.
+        \item Modelo de diseño, obteniendo un despliegue mucho más especifico del modelo anterior.
+    \end{enumerate}
+    \item \textbf{Construcción}: Se implementará y probará el producto, tanto su despliegue físico como el software de cada uno de sus componentes. Se obtiene:
+    \begin{enumerate}
+        \item Modelo de implementación, con el que se conseguirá representar la ejecución total del sistema.
+        \item Modelo de pruebas, el cual contiene el conjunto de casos de pruebas unitarias que se realizan al finalizar cada una de las fases del PUD.
+    \end{enumerate}
+    \item \textbf{Transición}: Al llegar a esta etapa, el producto está en su versión beta y se procede a la evaluación del mismo en busca de errores o deficiencias. Se obtiene:
+    \begin{enumerate}
+        \item Versión del producto final.
+        \item Documentación del desarrollo.
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{Aplicación}
+\label{subsec:Aplicacion}
+
+En este apartado se muestra de qué manera se ha aplicado el PUD para la gestión del proyecto. Posteriormente, en el Capítulo \ref{cap:Resultados} se detallarán los artefactos resultantes de dicha aplicación para cada una de las iteraciones.
+
+En la Tabla \ref{tab:iteraciones} se puede observar un resumen de la planificación del proyecto y de sus iteraciones. Para cada una de estas últimas se han aportado los objetivos más relevantes.
+
+\begin{table}[htb]
+    \centering
+    \caption{Planificación de iteraciones}
+    \label{tab:iteraciones}
+    \begin{tabular}[t]{ | c | c | p{8cm} |}
+         \hline
+         \textbf{Fase} &  \textbf{Iteración} & \textbf{Objetivos}\\
+         \hline\hline
+         Inicio &  Preliminar & 
+         Planificación del proyecto, estudio de su alcance y viabilidad, realizar el documento del Anteproyecto, captura de requisitos y modelado de casos de uso.\\
+         \hline
+         \multirow{2}{*}{Elaboración}
+         & 1 & Definición de la arquitectura del sistema y modelado de casos de uso detallado.\\
+         \cline{2-3}
+         & 2 & Realizar el modelo de análisis y de diseño, preparación del entorno de desarrollo.\\
+         \hline\multirow{6}{*}{Construcción}
+         & 3 & Desarrollo de las funcionalidades que engloba CdU.01 Acceso/Registro.\\
+         \cline{2-3}
+         & 4 & Desarrollo de las funcionalidades que engloba CdU.02 Visualización\\
+         \cline{2-3}
+         & 5 & Desarrollo de las funcionalidades que engloba CdU.03 Gestión de configuración\\
+         \cline{2-3}
+         & 6 & Desarrollo de las funcionalidades que engloba CdU.04 Recolección de información\\
+         \cline{2-3}
+         & 7 & Desarrollo de las funcionalidades que engloba CdU.05 Aplicación de comandos\\
+         \hline
+         \multirow{3}{*}{Transición}
+         & 8 & Despliegue del sistema.\\
+         \cline{2-3}
+         & 9 & Pruebas.\\
+         \cline{2-3}
+         & 10 & Documentación del proyecto y manual de usuario.\\
+         \hline
+    \end{tabular}
+\end{table}
+
+
+\section{Marco tecnológico}
+\label{sec:metodologia.herramientas}
+
+\subsection{Herramientas hardware}
+\label{subsec:metodologia.herramientas.hardware}
+
+\begin{itemize}
+    \item PyCom
+    \item Módulo LoRa
+    \item Ordenador del lab
+    \item DHT22
+    \item Sensor de tierra
+\end{itemize}
+
+\subsection{Herramientas para la gestión de proyectos}
+\label{subsec:metodologia.herramientas.proyectos}
+
+\begin{itemize}
+    \item Bitbucket
+    \item Mercurial
+    \item Microsoft Project
+    \item Métrica v.3
+\end{itemize}
+
+\subsection{Herramientas, lenguajes y tecnologías para el modelado de software}
+\label{subsec:metodologia.herramientas.software.modelado}
+
+\begin{itemize}
+    \item Visual Paradigm
+    \item UML
+\end{itemize}
+
+\subsection{Herramientas, lenguajes y tecnologías para el desarrollo de software}
+\label{subsec:metodologia.herramientas.software.desarrollo}
+
+\begin{itemize}
+    \item Atom
+    \item pymakr
+    \item Python
+    \item Micropython
+\end{itemize}
+
+\subsection{Herramientas para la elaboración de la documentación}
+\label{subsec:metodologia.herramientas.documentacion}
+
+\begin{itemize}
+    \item \LaTeX
+    \item Overleaf
+    \item Draw.io
+\end{itemize}
+
+\begin{itemize}
+    \item Docker --> Resultados
+    \item MySql Server --> Resultados
+    \item Grafana --> Resultados
+\end{itemize}
