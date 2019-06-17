@@ -20,10 +20,11 @@ class DHT22_johnmcdnz:
         value = []
         time.sleep(1)
         pin(0)
-        time.sleep_us(20000) # MODIFIED
+        time.sleep_ms(20) # MODIFIED
         pin(1)
+#        time.sleep_us(50) # MODIFIED
         irq = disable_irq()
-        for i in range(700):
+        for i in range(700): # MODIFIED
             value.append(pin())
         enable_irq(irq)
         return value
