@@ -34,11 +34,17 @@ class Sensor:
             for attr in values:
                 setattr(self, attr, values[attr])
 
+        def __str__(self):
+            return '\n'.join((': '.join((attr, str(self.__dict__[attr])))
+                             ) for attr in
+                            self.__dict__)
+
     def __init__(self, pin):
         self.pin = pin
 
     def read(self):
         return self.reader.read()
+
 
 class DHT22_Sensor(Sensor):
     class Reader:
@@ -60,13 +66,14 @@ class DHT22_Sensor(Sensor):
         super(DHT22_Sensor, self).__init__(pin)
         self.reader = self.Reader(self.pin)
 
+
 class Soil_Sensor(Sensor):
     class Reader:
         def __init__(self, pin):
             self.channel = ADC().channel(pin=pin)
 
         def read(self):
-            return Soil_Sensor.Result({'humidity': self.channel.value()}
+            return Soil_Sensor.Result({'soil_humidity': self.channel.value()}
                                       )
 
     def __init__(self, pin):
@@ -138,12 +145,11 @@ def sendData(seq):
 def setup_sensors():
     soil_sensor = Soil_Sensor(SENSOR_SOIL_PIN)
     result = soil_sensor.read()
-    print(result.humidity)
+    print(result)
 
     dht22_sensor = DHT22_Sensor(SENSOR_DHT22_PIN)
     result = dht22_sensor.read()
-    print(result.humidity)
-    print(result.temperature)
+    print(result)
 
 
 
