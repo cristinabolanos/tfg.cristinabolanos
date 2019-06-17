@@ -5,12 +5,34 @@ import socket
 import struct
 import time
 import threading
-from cmd import Cmd
+from peewee import MySQLDatabase, Model, FloatField, IntegerField,
+                   DateTimeField, 
 
 ADDRESSES = {
     '5009': '127.0.0.0',
     '5010': '127.0.0.0'
 }
+
+DB = MySQLDatabase('example',
+                   user='listener',
+                   password='secret',
+                   host='local_mysql',
+                   port=3306
+                   )
+
+AREA_DATA_FORMAT = '!3B' #   | Tmp | Hum | Soil
+
+
+class Environment(Model):
+    area = IntegerField()
+    temperature = FloatField()
+    humidity = FloatField()
+    moisture = FloatField()
+    dat = DateTimeField()
+
+    class Meta:
+        database = DB
+        db_table = 'env'
 
 
 class Listener(threading.Thread):
@@ -31,7 +53,16 @@ class Listener(threading.Thread):
             try:
                 sock.listen()
                 conn, addr = sock.accept()
-                print(addr)
+                msg = conn.recv(struct.calcsize(AREA_DATA_FORMAT))
+                print(struct.unpack(AREA_DATA_FORMAT))
+                '''
+                Environment(area=
+                            dat=
+                            temperature=
+                            moisture=
+                            humidity=
+                            ).save()
+                '''
             except socket.timeout:
                 pass
             except Exception as e:
@@ -41,12 +72,6 @@ class Listener(threading.Thread):
 
     def kill(self):
         self.alive = False
-
-def addGateway():
-    pass
-
-def main():
-    pass
 
 if __name__ == '__main__':
     try:

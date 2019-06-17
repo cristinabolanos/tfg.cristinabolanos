@@ -53,7 +53,6 @@ CREATE TABLE `area` (
 	`sensor_hum` INT NOT NULL REFERENCES sensor (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
 	`sensor_tem` INT NOT NULL REFERENCES sensor (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
 	`sensor_moi` INT NOT NULL REFERENCES sensor (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-	`sensor_lig` INT NOT NULL REFERENCES sensor (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
 	`lon` INT,
 	`lat` INT,
 	PRIMARY KEY (`id`)	
@@ -66,6 +65,5 @@ CREATE TABLE `env` (
 	`humidity` FLOAT NOT NULL,
 	`temperature` FLOAT NOT NULL,
 	`moisture` FLOAT NOT NULL,
-	`lightness` FLOAT NOT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
