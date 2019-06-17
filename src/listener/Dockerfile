@@ -1,0 +1,8 @@
+FROM python:3.7.3-stretch
+LABEL location="local"
+LABEL version="0.0.0"
+
+COPY listener.py /var/listener/run.py
+RUN pip install peewee
+
+CMD [ "python", "/var/listener/run.py"]
