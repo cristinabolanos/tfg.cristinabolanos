@@ -4,7 +4,7 @@ ifeq ($(VERSION), 0.0.0)
 include ./ibmcloud.mk
 endif
 
-DEPENDENCIES := docker docker-compose
+DEPENDENCIES := docker
 REMOTE := no
 
 export
