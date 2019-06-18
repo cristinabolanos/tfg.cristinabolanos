@@ -7,6 +7,7 @@ import time
 import threading
 import datetime
 from peewee import MySQLDatabase, Model, FloatField, IntegerField, DateTimeField
+from Crypto.Cipher import AES
 
 ADDRESSES = {
     '5009': ''
@@ -20,6 +21,8 @@ DB = MySQLDatabase('example',
                    )
 
 AREA_DATA_FORMAT = '!3B' #   | Tmp | Hum | Soil
+
+KEY_GATEWAY_010 = b'.?Gateway-_ 010#'
 
 
 class Environment(Model):
@@ -54,10 +57,7 @@ class Listener(threading.Thread):
                 conn, addr = sock.accept()
                 msg = conn.recv(struct.calcsize(AREA_DATA_FORMAT))
                 temp, hum, soil = struct.unpack(AREA_DATA_FORMAT, msg)
-                print('FROM {0}: {1}'.format(addr,
-                                              struct.unpack(AREA_DATA_FORMAT, msg)
-                                              ))
-                Environment(area=1,
+                Environment(area=2,
                             dat=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                             temperature=temp,
                             moisture=hum,
