@@ -5,12 +5,10 @@ import socket
 import struct
 import time
 import threading
-from peewee import MySQLDatabase, Model, FloatField, IntegerField,
-                   DateTimeField, 
+from peewee import MySQLDatabase, Model, FloatField, IntegerField, DateTimeField
 
 ADDRESSES = {
-    '5009': '127.0.0.0',
-    '5010': '127.0.0.0'
+    '5009': ''
 }
 
 DB = MySQLDatabase('example',
@@ -54,7 +52,9 @@ class Listener(threading.Thread):
                 sock.listen()
                 conn, addr = sock.accept()
                 msg = conn.recv(struct.calcsize(AREA_DATA_FORMAT))
-                print(struct.unpack(AREA_DATA_FORMAT))
+                print('FROM {0}:\t{1}'.format(addr,
+                                              struct.unpack(AREA_DATA_FORMAT, msg)
+                                              ))
                 '''
                 Environment(area=
                             dat=
@@ -66,6 +66,7 @@ class Listener(threading.Thread):
             except socket.timeout:
                 pass
             except Exception as e:
+                print(e)
                 sock.close()
                 self.alive = False
         print(id_heading_str + 'Switching off')
