@@ -5,7 +5,6 @@ import ubinascii
 import sys
 from machine import unique_id, ADC, Pin
 from network import LoRa
-#from dth import DTH, DTHResult # https://github.com/JurassicPork/DHT_PyCom
 import sensors
 
 lora = LoRa(mode=LoRa.LORA, tx_iq=True, region=LoRa.EU868)

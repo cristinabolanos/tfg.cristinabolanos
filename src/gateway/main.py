@@ -4,6 +4,7 @@ import time
 import ubinascii
 from machine import unique_id
 from network import LoRa, WLAN
+from crypto import AES, getrandbits
 
 lora = LoRa(mode=LoRa.LORA, rx_iq=True, region=LoRa.EU868)
 wlan = WLAN(mode=WLAN.STA)
@@ -15,6 +16,7 @@ SETUP_ACK_FORMAT = '!2B' + 'B' + ''  # Dest | Src | Src
 
 BROADCAST = 255
 ID = 10
+CIPHER = AES(b'.?Gateway-_ 010#', AES.MODE_CFB, getrandbits(128))
 
 RECIEVING_WAIT_TIME = 15
 
@@ -28,10 +30,6 @@ def wlan_setup(ssid='LoPyAP',
     print(wlan.ifconfig())
 
 
-def processData(temp, hum, soil):
-    print('Recieved {0} {1} {2}'.format(temp, hum, soil))
-
-
 def recieveData():
     sock = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
     sock.setblocking(False)
@@ -43,7 +41,7 @@ def recieveData():
             id, node, data_seq, temp, hum, soil = struct.unpack(
                 DATA_FORMAT, data
             )
-            processData(temp, hum, soil)
+            sendData(temp, hum, soil)
             sock.send(struct.pack(DATA_ACK_FORMAT,
                                   node,
                                   data_seq)
@@ -58,7 +56,7 @@ def recieveData():
                       )
 
 
-def sendData():
+def sendData(temp, hum, soil):
     pass
 
 

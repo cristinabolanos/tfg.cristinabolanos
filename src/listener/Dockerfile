@@ -3,6 +3,6 @@ LABEL location="local"
 LABEL version="0.0.0"
 
 COPY listener.py /var/listener/run.py
-RUN pip install peewee
+RUN pip3 install peewee pymsql pycrypto
 
-CMD [ "python", "/var/listener/run.py"]
+CMD [ "python3", "/var/listener/run.py"]
