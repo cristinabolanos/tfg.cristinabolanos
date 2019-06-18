@@ -12,7 +12,7 @@ INSERT INTO plant (name, fase1, fase2, fase3, fase4) VALUES ('Helecho', 1, 2, 3,
 
 INSERT INTO user (email, password, name) VALUES ('example@example.org', SHA2('example1234',256), 'Example');
 INSERT INTO field (user) VALUES ('example@example.org');
-INSERT INTO area (field, sensor_hum, sensor_tem, sensor_moi, sensor_lig) VALUES (1, 1, 2, 3, 4);
+INSERT INTO area (field, sensor_hum, sensor_tem, sensor_moi) VALUES (1, 1, 2, 3);
 
 INSERT INTO env (area, dat, temperature, humidity, moisture) VALUES (1, '2019-04-01 14:00:00', 24.20, 38.40, 500);
 INSERT INTO env (area, dat, temperature, humidity, moisture) VALUES (1, '2019-04-01 14:05:00', 23.60, 36.70, 558);

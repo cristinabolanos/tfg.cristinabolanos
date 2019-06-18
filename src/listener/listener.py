@@ -5,6 +5,7 @@ import socket
 import struct
 import time
 import threading
+import datetime
 from peewee import MySQLDatabase, Model, FloatField, IntegerField, DateTimeField
 
 ADDRESSES = {
@@ -52,17 +53,16 @@ class Listener(threading.Thread):
                 sock.listen()
                 conn, addr = sock.accept()
                 msg = conn.recv(struct.calcsize(AREA_DATA_FORMAT))
-                print('FROM {0}:\t{1}'.format(addr,
+                temp, hum, soil = struct.unpack(AREA_DATA_FORMAT, msg)
+                print('FROM {0}: {1}'.format(addr,
                                               struct.unpack(AREA_DATA_FORMAT, msg)
                                               ))
-                '''
-                Environment(area=
-                            dat=
-                            temperature=
-                            moisture=
-                            humidity=
+                Environment(area=1,
+                            dat=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                            temperature=temp,
+                            moisture=hum,
+                            humidity=soil
                             ).save()
-                '''
             except socket.timeout:
                 pass
             except Exception as e:

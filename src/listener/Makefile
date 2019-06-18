@@ -21,5 +21,5 @@ endif
 
 .run:
 ifeq ($(REMOTE), no)
-	@docker run -d -p 5009:5009 --name=local_$(LISTENER) --network=SUBI local/LISTENER/$(LISTENER):$(VERSION)
+	@docker run -d -p 5009:5009 --name=local_$(LISTENER) --network=SUBI local/listener/$(LISTENER):$(VERSION)
 endif
