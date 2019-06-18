@@ -1,15 +1,8 @@
 
-.check-dependencies:
-	$(foreach depen,$(DEPENDENCIES),\
-		$(if $(shell which $(depen)),,$(error "Programa $(depen) no instalado.")))
-
-%-lastest: %-0.0.0
-	@echo ""
-
-%-0.0.0: LISTENER = python
-%-0.0.0: VERSION = 0.0.0
-%-0.0.0: .check-dependencies .%
-	@echo "Software version: $(VERSION)"
+%-lastest: LISTENER = python
+%-lastest: VERSION = lastest
+%-lastest: .%
+	@echo "Done"
 
 .build:
 ifeq ($(REMOTE), no)
@@ -21,5 +14,5 @@ endif
 
 .run:
 ifeq ($(REMOTE), no)
-	@docker run -d -p 5009:5009 --name=local_$(LISTENER) --network=SUBI local/listener/$(LISTENER):$(VERSION)
+	@docker run -d -p 5009:5009 --name=local_$(LISTENER) --network=$(NETWORK) local/listener/$(LISTENER):$(VERSION)
 endif

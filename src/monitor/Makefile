@@ -1,17 +1,9 @@
+PASSWORD ?= $(shell bash -c 'read -s -p "Contraseña: " pwd; echo $$pwd')
 
-PASSWORD := secret
-
-.check-dependencies:
-	$(foreach depen,$(DEPENDENCIES),\
-		$(if $(shell which $(depen)),,$(error "Programa $(depen) no instalado.")))
-
-%-lastest: %-0.0.0
-	@echo ""
-
-%-0.0.0: MONITOR = grafana
-%-0.0.0: VERSION = 0.0.0
-%-0.0.0: .check-dependencies .%
-	@echo "Software version: $(VERSION)"
+%-lastest: MONITOR = grafana
+%-lastest: VERSION = lastest
+%-lastest: .%
+	@echo "Done"
 
 .build:
 ifeq ($(REMOTE), no)
@@ -23,5 +15,5 @@ endif
 
 .run:
 ifeq ($(REMOTE), no)
-	@docker run -d -p 80:3000 --name=local_$(MONITOR) --network=SUBI -e "GF_SECURITY_ADMIN_PASSWORD=$(PASSWORD)" local/monitor/$(MONITOR):$(VERSION)
+	@docker run -d -p 80:3000 --name=local_$(MONITOR) --network=$(NETWORK) -e "GF_SECURITY_ADMIN_PASSWORD=$(PASSWORD)" local/monitor/$(MONITOR):$(VERSION)
 endif

@@ -1,17 +1,9 @@
+PASSWORD ?= $(shell bash -c 'read -s -p "Contraseña: " pwd; echo $$pwd')
 
-PASSWORD := secret
-
-.check-dependencies:
-	$(foreach depen,$(DEPENDENCIES),\
-		$(if $(shell which $(depen)),,$(error "Programa $(depen) no instalado.")))
-
-%-lastest: %-0.0.0
-	@echo ""
-
-%-0.0.0: STORAGE = mysql
-%-0.0.0: VERSION = 0.0.0
-%-0.0.0: .check-dependencies .%
-	@echo "Software version: $(VERSION)"
+%-lastest: STORAGE = mysql
+%-lastest: VERSION = lastest
+%-lastest: .%
+	@echo "Done"
 
 .build:
 ifeq ($(REMOTE), no)
@@ -23,7 +15,7 @@ endif
 
 .run:
 ifeq ($(REMOTE), no)
-	@docker run -d --name=local_$(STORAGE) --network=SUBI -e "MYSQL_ROOT_PASSWORD=$(PASSWORD)" local/storage/$(STORAGE):$(VERSION)
+	@docker run -d --name=local_$(STORAGE) --network=$(NETWORK) -e "MYSQL_ROOT_PASSWORD=$(PASSWORD)" local/storage/$(STORAGE):$(VERSION)
 endif
 
 .create:
