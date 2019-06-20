@@ -32,5 +32,5 @@ endif
 
 .log:
 ifeq ($(REMOTE), no)
-	@docker logs local_$(MONITOR)
+	@docker logs local_$(MONITOR) | less
 endif
