@@ -26,7 +26,7 @@ CIPHER = None
 
 RECIEVING_WAIT_TIME = 15
 
-AWS_ADDR = ('ec2-54-80-153-215.compute-1.amazonaws.com', 5009)
+AWS_ADDR = ('54.80.153.215', 5009)
 
 LOG = logging.Logger(level=logging.DEBUG)
 
