@@ -14,6 +14,8 @@ class DHT22_johnmcdnz:
             if (temp > 0x7fff):
                 temp = 0x8000 - temp
             result = (temp, hum)
+        else:
+            result = (0, 0)
         return result
 
     def getval(self, pin):
@@ -34,10 +36,15 @@ class DHT22_johnmcdnz:
         bits = []
 
         if len(input) != 0:
-            print(input)
             result = [0]*5
-            one_index = input.index(1, 0)
-            zero_index = input.index(0, one_index)
+            try:
+                one_index = input.index(1, 0)
+            except ValueError:
+                one_index = 0
+            try:
+                zero_index = input.index(0, one_index)
+            except ValueError:
+                zero_index = 0
 
             while len(bits) < len(result)*8:
                 try:
@@ -59,10 +66,11 @@ class DHT22_johnmcdnz:
             if (result[0] + result[1] + result[2] +
                 result[3])&0xff != result[4]:
                 result = None
-                print('Checksum error!')
+#                print('Checksum error!')
             else:
                 result = result[0:4]
         else:
-            print('Input empty!')
+            pass
+#            print('Input empty!')
 
         return result
